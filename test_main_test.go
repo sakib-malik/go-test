@@ -20,7 +20,7 @@ var _ = Describe("Source Service", func() {
 	Describe("should not return `HAHA`", func() {
 		It("When called", func() {
 			res := lib.FUN()
-			Expect(res).To(Equal("NANA"))
+			Expect(res).To(Equal("HAHA"))
 		})
 	})
 })
