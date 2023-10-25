@@ -16,7 +16,15 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - uses: WillAbides/setup-go-faster@v1.10.1
+        with:
+          go-version: 1.20.4
+      - name: download go coverage
+        run: |
+          go test -v -cover 2>&1 ./... -coverprofile=cover.out
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+        with:
+          files: ./cover.out
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
