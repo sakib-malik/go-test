@@ -14,7 +14,7 @@ func TestCmd(t *testing.T) {
 		}
 	})
 	t.Run("Coverage Test 2", func(t *testing.T) {
-		if true {
+		if false {
 			t.Logf("3 == 3")
 		} else {
 			t.Error("3 != 3")
