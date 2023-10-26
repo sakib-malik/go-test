@@ -23,6 +23,10 @@ jobs:
         continue-on-error: true
         run: |
           go test -v -cover 2>&1 ./... -coverprofile=cover.out
+      - name: install ginkgo
+        run: |
+          go install github.com/onsi/ginkgo/v2/ginkgo
+          ginkgo --junit-report=report.xml
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
