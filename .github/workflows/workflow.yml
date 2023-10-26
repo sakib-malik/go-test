@@ -26,7 +26,17 @@ jobs:
       - name: install ginkgo
         run: |
           go install github.com/onsi/ginkgo/v2/ginkgo
-          ginkgo --junit-report=report.xml
+          mkdir -p allure-results
+          ginkgo --junit-report=./allure-results/report.xml
+      - name: Test marketplace action
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: ./allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
