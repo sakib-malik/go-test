@@ -37,9 +37,7 @@ jobs:
           cat allure-results/report.xml
           
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./cover.out
-          flags: unittests
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+           curl -Os https://uploader.codecov.io/latest/linux/codecov
+           chmod +x codecov
+           ./codecov -t ${{ secrets.CODECOV_TOKEN }}
