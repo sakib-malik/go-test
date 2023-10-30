@@ -22,6 +22,7 @@ jobs:
       - name: download go coverage
         continue-on-error: true
         run: |
+          mkdir -p allure-report
           go test -v -race -cover -covermode=atomic -json 2>&1 ./... -coverprofile=cover.out | go-junit-report -parser gojson > ./allure-report/report.xml
       - uses: actions/setup-java@v3
         with:
@@ -31,7 +32,7 @@ jobs:
         run: |
           wget https://github.com/allure-framework/allure2/releases/download/2.24.1/allure-2.24.1.tgz
           tar zxvf allure-2.24.1.tgz
-          /bin/allure generate --single-file allure-results --clean
+          allure-2.24.1/bin/allure generate --single-file allure-results --clean
           ls allure-results
           
       - name: Upload coverage reports to Codecov
