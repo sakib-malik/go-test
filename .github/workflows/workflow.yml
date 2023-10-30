@@ -34,8 +34,7 @@ jobs:
           wget https://github.com/allure-framework/allure2/releases/download/2.24.1/allure-2.24.1.tgz
           tar zxvf allure-2.24.1.tgz
           allure-2.24.1/bin/allure generate --single-file allure-results --clean
-          ls allure-report
-          allure-2.24.1/bin/allure open
+          cat allure-results/report.xml
           
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
