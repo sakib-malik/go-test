@@ -22,35 +22,18 @@ jobs:
       - name: download go coverage
         continue-on-error: true
         run: |
-          go test -v -cover 2>&1 ./... -coverprofile=cover.out
-      - name: install ginkgo
+          go test -v -race -cover -covermode=atomic -json 2>&1 ./... -coverprofile=cover.out | go-junit-report -parser gojson > ./allure-report/report.xml
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Get Allure 
         run: |
-          go install github.com/onsi/ginkgo/v2/ginkgo
-          mkdir -p allure-results
-          ginkgo --junit-report=./allure-results/report.xml
-      - name: Get Allure history
-        uses: actions/checkout@v2
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-      - name: Test marketplace action
-        uses: simple-elf/allure-report-action@master
-        if: always()
-        id: allure-report
-        with:
-          allure_results: ./allure-results
-          gh_pages: gh-pages
-          allure_report: allure-report
-          allure_history: allure-history
-      - name: Deploy report to Github Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
+          wget https://github.com/allure-framework/allure2/releases/download/2.24.1/allure-2.24.1.tgz
+          tar zxvf allure-2.24.1.tgz
+          /bin/allure generate --single-file allure-results --clean
+          ls allure-results
+          
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
