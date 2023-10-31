@@ -13,7 +13,5 @@ jobs:
 
       - name: Check Events
         if: contains(github.event.issue.pull_request.html_url, '/pull/') && github.event.issue.state != 'closed'
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
-          echo "$GITHUB_CONTEXT"
+          echo "${{ github.event.comment.body }}"
