@@ -25,10 +25,6 @@ jobs:
           mkdir -p allure-results
           go install github.com/jstemmer/go-junit-report/v2@latest
           go test -v -race -cover -covermode=atomic -json 2>&1 ./... -coverprofile=cover.out | go-junit-report -parser gojson > ./allure-results/report.xml
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
       - name: Get Allure 
         run: |
           wget https://github.com/allure-framework/allure2/releases/download/2.24.1/allure-2.24.1.tgz
