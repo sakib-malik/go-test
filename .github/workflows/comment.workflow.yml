@@ -1,0 +1,23 @@
+name: PR Comment Workflow
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run your build or tests
+        run: |
+          # Add your build or test commands here
+          echo "Running build or tests"
+
+      - name: Notify on PR comment
+        if: github.event_name == 'issue_comment' && contains(github.event.issue.pull_request.html_url, 'github.com/pulls')
+        run: |
+          # Add your notification logic here, for example, sending a Slack message or an email
+          echo "PR comment detected. Performing some actions."
