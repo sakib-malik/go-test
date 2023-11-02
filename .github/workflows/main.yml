@@ -1,0 +1,57 @@
+name: Unit Tests
+run-name: Running unit tests 🚀
+on: 
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  RUN_TESTS:
+    runs-on: ubuntu-latest
+    steps:
+      
+      - name: Check out repository code
+        uses: actions/checkout@v4
+    
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
+      
+      - name: Generate Go Tests
+        continue-on-error: true
+        run: |
+          go install github.com/jstemmer/go-junit-report/v2@latest
+          go test -v -race -cover -covermode=atomic -json 2>&1 ./... -coverprofile=cover.out | go-junit-report -parser gojson > ./report.xml
+
+      - name: Upload to stack
+        run: |
+          curl -u "${{env.BS_USER}}:${{env.BS_PASS}}" -vvv \
+          -X POST \
+          -F "data=@./report.xml" \
+          -F "projectName=${{ github.event.repository.name }}" \
+          -F "buildName=${{ github.event.issue.number }}" \
+          -F "buildIdentifier=${{ github.run_id }}" \
+          -F "tags=unit" \
+          -F "ci=https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}" \
+          https://upload-observability.browserstack.com/upload
+      - name: Add comment to PR
+        run: |
+          COMMENT=""
+          API_URL="https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+          AUTH_HEADER="Authorization: Bearer ${{ env.GITHUB_BOT_PAC }}"
+          
+          curl -X POST -H "Content-Type: application/json" -H "$AUTH_HEADER" -d "{\"body\":\"$COMMENT\"}" $API_URL
+          
+      # - name: Upload coverage reports to Codecov
+      #   run: |
+      #      curl -Os https://uploader.codecov.io/latest/linux/codecov
+      #      chmod +x codecov
+      #      ./codecov -t ${{ secrets.CODECOV_TOKEN }} -f ./cover.out -F "integrationtest"
+
+      # - name: Add comment to PR Again
+      #   run: |
+      #     COMMENT="🚀 Check Unit Test Coverage: https://app.codecov.io/github/${{github.repository}}"
+      #     API_URL="https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+      #     AUTH_HEADER="Authorization: Bearer ${{ env.GITHUB_BOT_PAC }}"
+          
+      #     curl -X POST -H "Content-Type: application/json" -H "$AUTH_HEADER" -d "{\"body\":\"$COMMENT\"}" $API_URL
