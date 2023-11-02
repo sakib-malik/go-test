@@ -24,8 +24,11 @@ jobs:
           go test -v -race -cover -covermode=atomic -json 2>&1 ./... -coverprofile=cover.out | go-junit-report -parser gojson > ./report.xml
 
       - name: Upload to stack
+        env:
+          BS_USER: ${{ secrets.BS_USER }}
+          BS_PASS: ${{ secrets.BS_PASS }}
         run: |
-          curl -u "${{env.BS_USER}}:${{env.BS_PASS}}" -vvv \
+          curl -u "$BS_USER:$BS_PASS" -vvv \
           -X POST \
           -F "data=@./report.xml" \
           -F "projectName=${{ github.event.repository.name }}" \
