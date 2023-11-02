@@ -11,7 +11,9 @@ jobs:
       - name: TEST
         run: |
           curl_response='{"status":"success","message":"Request to import Junit reports received. You can access the build on this URL in a few seconds https://observability.browserstack.com/builds/wkbrrfryf8un1vstvchdy5trcxrlevdqtxtkgblg","build_id":"6732955262"}'
-          url=$(echo "$curl_response" | jq -r '.message | capture("https://[^\s]+").string')
+
+          url=$(echo "$curl_response" | jq -r '.message' | grep -o 'https://[^ ]*')
+
           echo "URL: $url"
       
       - name: Check out repository code
