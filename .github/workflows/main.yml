@@ -4,6 +4,14 @@ on:
   pull_request:
     types: [opened, reopened]
 
+permissions:
+  id-token: write
+  pull-requests: write
+  issues: write
+  checks: write 
+  contents: write
+  packages: read
+
 jobs:
   RUN_TESTS:
     runs-on: ubuntu-latest
