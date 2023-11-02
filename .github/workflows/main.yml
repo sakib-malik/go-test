@@ -28,15 +28,7 @@ jobs:
           BS_USER: ${{ secrets.BS_USER }}
           BS_PASS: ${{ secrets.BS_PASS }}
         run: |
-          curl -u "$BS_USER:$BS_PASS" -vvv \
-          -X POST \
-          -F "data=@./report.xml" \
-          -F "projectName=${{ github.event.repository.name }}" \
-          -F "buildName=${{ github.event.issue.number }}" \
-          -F "buildIdentifier=${{ github.run_id }}" \
-          -F "tags=unit" \
-          -F "ci=https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}" \
-          https://upload-observability.browserstack.com/upload
+          curl -u "${{ env.BS_USER }}:${{ env.BS_PASS }}" -X POST -F "data=@./report.xml" -F "projectName=${{ github.event.repository.name }}" -F "buildName=${{ github.event.issue.number }}" -F "buildIdentifier=${{ github.run_id }}" -F "tags=unit" -F "ci=https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}" https://upload-observability.browserstack.com/upload
       - name: Add comment to PR
         run: |
           COMMENT=""
