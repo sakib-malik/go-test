@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="6" failures="3">
+	<testsuite name="test-auto/lib" tests="0" failures="0" errors="0" id="0" hostname="MacBook-Pro" time="0.000" timestamp="2023-10-31T12:43:54+05:30"></testsuite>
+	<testsuite name="test-auto" tests="1" failures="1" errors="0" id="1" hostname="MacBook-Pro" time="0.625" timestamp="2023-10-31T12:43:54+05:30">
+		<testcase name="TestDummySourceService" classname="test-auto" time="0.000">
+			<failure message="Failed"><![CDATA[Running Suite: TESTAUTO Suite - /Users/sakib/Desktop/test-auto
+==============================================================
+Random Seed: �[1m1698736434�[0m
+
+Will run �[1m2�[0m of �[1m2�[0m specs
+�[38;5;10m•�[0m
+�[38;5;243m------------------------------�[0m
+�[38;5;9m• [FAILED] [0.001 seconds]�[0m
+�[0mSource Service �[38;5;243mshould not return `HAHA` �[38;5;9m�[1m[It] When called�[0m
+�[38;5;243m/Users/sakib/Desktop/test-auto/test_main_test.go:21�[0m
+
+  �[38;5;9m[FAILED] Expected
+      <string>: HAHA
+  to equal
+      <string>: NANA�[0m
+  �[38;5;9mIn �[1m[It]�[0m�[38;5;9m at: �[1m/Users/sakib/Desktop/test-auto/test_main_test.go:23�[0m �[38;5;243m@ 10/31/23 12:43:54.907�[0m
+�[38;5;243m------------------------------�[0m
+
+�[38;5;9m�[1mSummarizing 1 Failure:�[0m
+  �[38;5;9m[FAIL]�[0m �[0mSource Service �[38;5;243mshould not return `HAHA` �[38;5;9m�[1m[It] When called�[0m
+  �[38;5;243m/Users/sakib/Desktop/test-auto/test_main_test.go:23�[0m
+
+�[38;5;9m�[1mRan 2 of 2 Specs in 0.002 seconds�[0m
+�[38;5;9m�[1mFAIL!�[0m -- �[38;5;10m�[1m1 Passed�[0m | �[38;5;9m�[1m1 Failed�[0m | �[38;5;11m�[1m0 Pending�[0m | �[38;5;14m�[1m0 Skipped�[0m]]></failure>
+		</testcase>
+	</testsuite>
+	<testsuite name="test-auto/cmd" tests="5" failures="2" errors="0" id="2" hostname="MacBook-Pro" time="0.887" timestamp="2023-10-31T12:43:55+05:30">
+		<properties>
+			<property name="coverage.statements.pct" value="3.30"></property>
+		</properties>
+		<testcase name="TestCmd" classname="test-auto/cmd" time="0.000">
+			<failure message="Failed"></failure>
+		</testcase>
+		<testcase name="TestCmd/Coverage_Test_1" classname="test-auto/cmd" time="0.000">
+			<system-out><![CDATA[    main_test.go:11: 2 == 2]]></system-out>
+		</testcase>
+		<testcase name="TestCmd/Coverage_Test_2" classname="test-auto/cmd" time="0.000">
+			<system-out><![CDATA[    main_test.go:18: 3 == 3]]></system-out>
+		</testcase>
+		<testcase name="TestCmd/Coverage_Test_3" classname="test-auto/cmd" time="0.000">
+			<failure message="Failed"><![CDATA[    main_test.go:27: 3 != 3]]></failure>
+		</testcase>
+		<testcase name="TestCmd/Coverage_Test_4" classname="test-auto/cmd" time="0.000">
+			<system-out><![CDATA[    main_test.go:32: 3 == 3]]></system-out>
+		</testcase>
+	</testsuite>
+</testsuites>
