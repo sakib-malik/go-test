@@ -25,7 +25,7 @@ jobs:
 
           # Set environment variables in the workflow context
           for ENV_VAR in $ENV_VARIABLES; do
-            echo "::set-env name=$ENV_VAR"
+            echo "$ENV_VAR" >> $GITHUB_ENV
           done
       - name: check env
         run: |
