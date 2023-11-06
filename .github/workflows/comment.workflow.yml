@@ -11,7 +11,23 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Check Events
-        if: contains(github.event.issue.pull_request.html_url, '/pull/') && github.event.issue.state != 'closed'
+      - name: Validate Comment
         run: |
-          echo "${{ github.event.comment.body }}"
+          COMMENT_BODY=$(echo "${{ github.event.comment.body }}")
+          echo "$COMMENT_BODY"
+          if [[ "${{ github.event.comment.body }}" == *'run_integration_tests'* && "${{ github.event.issue.pull_request.html_url }}" == *'/pull/'* && "${{ github.event.issue.state }}" != 'closed' ]]; then
+            echo "valid comment"
+          else
+            exit 1
+          fi
+          # Extract environment variables from the comment
+          ENV_VARIABLES=$(echo "$COMMENT_BODY" | grep -oP '\-e\s+\w+\s*=\s*\w+' | sed 's/\-e\s*//g')
+
+          # Set environment variables in the workflow context
+          for ENV_VAR in $ENV_VARIABLES; do
+            echo "::set-env name=$ENV_VAR"
+          done
+      - name: check env
+        run: |
+          echo "TEST_ENV: $TEST_ENV"
+          echo "ROUTE_CONTEXT: $ROUTE_CONTEXT"
