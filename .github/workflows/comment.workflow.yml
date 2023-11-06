@@ -29,5 +29,5 @@ jobs:
           done
       - name: check env
         run: |
-          echo "TEST_ENV: $TEST_ENV"
-          echo "ROUTE_CONTEXT: $ROUTE_CONTEXT"
+          echo "TEST_ENV: ${{ env.TEST_ENV }}"
+          echo "ROUTE_CONTEXT: ${{ env.ROUTE_CONTEXT }}"
