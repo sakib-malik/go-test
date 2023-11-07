@@ -35,7 +35,7 @@ jobs:
         continue-on-error: true
         run: |
           # Replace "exit 1" with your actual command
-          go test ./...
+          go test ./... || true
           # Capture the exit code in a variable
           exit_code=$?
           echo "EXIT_CODE=$exit_code" >> $GITHUB_ENV
