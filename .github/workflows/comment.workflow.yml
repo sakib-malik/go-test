@@ -33,5 +33,7 @@ jobs:
       - name: check env
         if: env.VALID == 'true'
         run: |
-          echo "TEST_ENV: ${{ env.TEST_ENV }}"
-          echo "ROUTE_CONTEXT: ${{ env.ROUTE_CONTEXT }}"
+          exit 1 || EXIT_CODE=$? >> $GITHUB_ENV
+      - name: exit
+        run: | 
+          exit $EXIT_CODE
