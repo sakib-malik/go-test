@@ -44,7 +44,11 @@ jobs:
       - name: Upload comment
         run: |
           dummy_url="https://abcdefkjnadkjsnkdnsakjdn.com/sdkjnajkdnkjsandjkansd"
-          COMMENT="🚀 TEST REPORT: $dummy_url  \nNumber of test cases failed: ${{ env.FAILED }}  \nNumber of test cases failed: ${{ env.FAILED }}"
+          COMMENT="🚀 TEST REPORT: $dummy_url
+          
+          Number of test cases failed: ${{ env.FAILED }}
+          
+          Number of test cases failed: ${{ env.FAILED }}"
           API_URL="https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
           AUTH_HEADER="Authorization: Bearer ${{ secrets.BOT_PAC }}"
           
