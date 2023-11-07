@@ -34,25 +34,24 @@ jobs:
           go install github.com/jstemmer/go-junit-report/v2@latest
           go test -v -race -cover -covermode=atomic -json 2>&1 ./... -coverprofile=cover.out | go-junit-report -parser gojson > ./report.xml
           
-          passed=$(xmlstarlet sel -t -v "count(//testcase[@status='run' and not(failure)])" ./report.xml)
+          total=$(xmlstarlet sel -t -v "count(//testcase)" ./report.xml)
           # Get the number of test cases failed
           failed=$(xmlstarlet sel -t -v "count(//testcase[failure])" ./report.xml)
           
-          echo "Number of test cases passed: $passed"
-          echo "Number of test cases failed: $failed"
+          echo "PASSED=$passed">> $GITHUB_ENV
+          echo "TOTAL=$total">> $GITHUB_ENV
 
-      - name: Upload to stack
-        env:
-          BS_USER: ${{ secrets.BS_USER }}
-          BS_PASS: ${{ secrets.BS_PASS }}
+      - name: Upload comment
         run: |
-          resp=$(curl -u "${{ env.BS_USER }}:${{ env.BS_PASS }}" -X POST -F "data=@./report.xml" -F "projectName=${{ github.event.repository.name }}" -F "buildName=${{ github.event.issue.number }}" -F "buildIdentifier=${{ github.run_id }}" -F "tags=unit" -F "ci=https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}" https://upload-observability.browserstack.com/upload)
-          url=$(echo "$resp" | jq -r '.message' | grep -o 'https://[^ ]*')
-          COMMENT="🚀 TEST REPORT: $url"
+          dummy_url="https://abcdefkjnadkjsnkdnsakjdn.com/sdkjnajkdnkjsandjkansd"
+          COMMENT="🚀 TEST REPORT: $dummy_url  \nNumber of test cases passed: ${{ env.PASSED }}  \nNumber of test cases failed: ${{ env.FAILED }"
           API_URL="https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
           AUTH_HEADER="Authorization: Bearer ${{ env.GITHUB_BOT_PAC }}"
           
-          curl -X POST -H "Content-Type: application/json" -H "$AUTH_HEADER" -d "{\"body\":\"$COMMENT\"}" $API_URL
+          # curl -X POST -H "Content-Type: application/json" -H "$AUTH_HEADER" -d "{\"body\":\"$COMMENT\"}" $API_URL
+          BODY=$(echo "$COMMENT" | jq -Rs '{"body": .}')
+          echo $BODY
+          curl -X POST -H "Content-Type: application/json" -H "$AUTH_HEADER" -d "$BODY" $API_URL
           
       # - name: Upload coverage reports to Codecov
       #   run: |
