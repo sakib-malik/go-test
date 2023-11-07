@@ -35,7 +35,7 @@ jobs:
         continue-on-error: true
         run: |
           exit 1
-          EXIT_CODE=$? >> $GITHUB_ENV
+          echo "EXIT_CODE=$?" >> $GITHUB_ENV
       - name: exit
         run: | 
           exit ${{ env.EXIT_CODE }}
