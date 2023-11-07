@@ -49,7 +49,7 @@ jobs:
           AUTH_HEADER="Authorization: Bearer ${{ secrets.BOT_PAC }}"
           
           # curl -X POST -H "Content-Type: application/json" -H "$AUTH_HEADER" -d "{\"body\":\"$COMMENT\"}" $API_URL
-          BODY=$(echo "$COMMENT" | jq -Rs '{"body": .}')
+          BODY=$(jq -n --arg body "$COMMENT" '{ "body": $body }')
           echo $BODY
           curl -X POST -H "Content-Type: application/json" -H "$AUTH_HEADER" -d "$BODY" $API_URL
           
