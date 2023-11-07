@@ -32,6 +32,7 @@ jobs:
           done
       - name: check env
         if: env.VALID == 'true'
+        continue-on-error: true
         run: |
           exit 1 || EXIT_CODE=$? >> $GITHUB_ENV
       - name: exit
