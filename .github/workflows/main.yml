@@ -46,7 +46,7 @@ jobs:
           dummy_url="https://abcdefkjnadkjsnkdnsakjdn.com/sdkjnajkdnkjsandjkansd"
           COMMENT="🚀 TEST REPORT: $dummy_url  \nNumber of test cases failed: ${{ env.FAILED }}  \nNumber of test cases failed: ${{ env.FAILED }}"
           API_URL="https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
-          AUTH_HEADER="Authorization: Bearer ${{ secrets.GITHUB_BOT_PAC }}"
+          AUTH_HEADER="Authorization: Bearer ${{ secrets.BOT_PAC }}"
           
           # curl -X POST -H "Content-Type: application/json" -H "$AUTH_HEADER" -d "{\"body\":\"$COMMENT\"}" $API_URL
           BODY=$(echo "$COMMENT" | jq -Rs '{"body": .}')
