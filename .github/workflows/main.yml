@@ -34,9 +34,9 @@ jobs:
           go install github.com/jstemmer/go-junit-report/v2@latest
           go test -v -race -cover -covermode=atomic -json 2>&1 ./... -coverprofile=cover.out | go-junit-report -parser gojson > ./report.xml
           
-          passed=$(xmlstarlet sel -t -v "count(//testcase[@status='run' and not(failure)])" ../report.xml)
+          passed=$(xmlstarlet sel -t -v "count(//testcase[@status='run' and not(failure)])" ./report.xml)
           # Get the number of test cases failed
-          failed=$(xmlstarlet sel -t -v "count(//testcase[failure])" ../report.xml)
+          failed=$(xmlstarlet sel -t -v "count(//testcase[failure])" ./report.xml)
           
           echo "Number of test cases passed: $passed"
           echo "Number of test cases failed: $failed"
