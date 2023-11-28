@@ -9,12 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.event.comment.body, 'run_integration_tests')
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        
-      - name: Check out code
-        run: |
-          gh pr checkout ${{ github.event.issue.number }}
-          # do your job...
+      - name: Github API Request
+        id: request
+        uses: octokit/request-action@v2.0.0
+        with:
+          route: ${{ github.event.issue.pull_request.url }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required for gh
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Checkout PR Branch
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ fromJson(steps.request.outputs.data).head.repo.full_name }}
+          ref: ${{ steps.pr_data.outputs.branch }}
