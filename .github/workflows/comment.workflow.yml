@@ -11,41 +11,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        
       - name: Check out code
         run: |
           gh pr checkout ${{ github.event.issue.number }}
           # do your job...
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required for gh
-
-      - name: Validate Comment
-        run: |
-          COMMENT_BODY=$(echo "${{ github.event.comment.body }}")
-          echo "$COMMENT_BODY"
-          if [[ "${{ github.event.comment.body }}" == *'run_integration_tests'* && "${{ github.event.issue.pull_request.html_url }}" == *'/pull/'* && "${{ github.event.issue.state }}" != 'closed' ]]; then
-            echo "VALID=true" >> $GITHUB_ENV
-            echo "valid comment"
-          else
-            echo "VALID=false" >> $GITHUB_ENV
-            exit 0
-          fi
-          # Extract environment variables from the comment
-          ENV_VARIABLES=$(echo "$COMMENT_BODY" | grep -oP '\-e\s+\w+\s*=\s*\w+' | sed 's/\-e\s*//g')
-
-          # Set environment variables in the workflow context
-          for ENV_VAR in $ENV_VARIABLES; do
-            echo "$ENV_VAR" >> $GITHUB_ENV
-          done
-      - name: check env
-        if: env.VALID == 'true'
-        continue-on-error: true
-        run: |
-          set -e
-          # Replace "exit 1" with your actual command
-          go test ./...
-          # Capture the exit code in a variable
-          exit_code=$?
-          echo "EXIT_CODE=$exit_code" >> $GITHUB_ENV
-      - name: exit
-        run: | 
-          exit ${{ env.EXIT_CODE }}
